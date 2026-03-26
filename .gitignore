@@ -1,0 +1,15 @@
+# 1. 编译输出的二进制文件 (不要把生成物放进源码库)
+greet-api
+*.exe
+*.out
+
+# 2. 数据库和缓存挂载的本地数据目录 (绝对不能提交！)
+data/
+
+# 3. 依赖包目录 (Go module 模式下通常不提交 vendor)
+vendor/
+
+# 4. IDE 和操作系统产生的配置/缓存文件
+.idea/
+.vscode/
+*.DS_Store

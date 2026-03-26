@@ -1,0 +1,49 @@
+syntax = "v1"
+
+// 1. 定义请求结构体 (类似 C++ struct)
+type RegisterReq {
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Number   string `json:"number"` // 学号/工号，作为唯一标识
+}
+
+// 2. 定义响应结构体
+type RegisterResp {
+	Message string `json:"message"`
+}
+
+type LoginReq {
+	Number   string `json:"number"`
+	Password string `json:"password"`
+}
+
+type LoginResp {
+	AccessToken  string `json:"accessToken"`
+	AccessExpire int64  `json:"accessExpire"`
+}
+
+type UserInfoResp {
+	Id     int64  `json:"id"`
+	Name   string `json:"name"`
+	Number string `json:"number"`
+}
+
+// 3. 定义服务接口
+service greet-api {
+	// 定义一个叫 Register 的 Handler (处理器)
+	@handler Register
+	// 这是一个 POST 请求，路由是 /user/register
+	post /user/register (RegisterReq) returns (RegisterResp)
+
+	@handler Login
+	post /user/login (LoginReq) returns (LoginResp)
+}
+
+@server (
+	jwt: Auth
+)
+service greet-api {
+	@handler UserInfo
+	get /user/info returns (UserInfoResp)
+}
+

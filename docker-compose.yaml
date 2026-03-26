@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  greet-api:
+    build: .             # 在当前目录(zero-demo)构建
+    ports:
+      - "8888:8888"
+    depends_on:
+      - mysql
+      - redis
+    volumes:
+      - ./greet/etc:/app/etc
+    restart: always
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-svc
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: gozero
+    ports:
+      - "3306:3306"
+    volumes:
+      # 注意：现在我们在根目录，所以路径多了一层 greet/
+      # 如果你的 user.sql 在 greet 目录下，要写成 ./greet/user.sql
+      # 如果 user.sql 在根目录，就写 ./user.sql
+      # 这里假设你还没移动 user.sql，它还在 zero-demo/ 下(根据之前的操作)
+      - ./data/mysql:/var/lib/mysql
+      # 请确认你的 user.sql 到底在哪？如果报错找不到文件，请检查这个路径
+      - ./user.sql:/docker-entrypoint-initdb.d/user.sql
+
+  redis:
+    image: redis:6-alpine
+    container_name: redis-svc
+    ports:
+      - "6379:6379"
