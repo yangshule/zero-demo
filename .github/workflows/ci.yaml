@@ -1,0 +1,37 @@
+name: Zero-Demo CI Pipeline  # 流水线的名字
+
+# 1. 触发条件 (什么时候唤醒管家？)
+on:
+  push:
+    branches: [ "main" ]     # 当有代码推送到 main 分支时触发
+  pull_request:
+    branches: [ "main" ]
+
+# 2. 任务列表 (管家要做什么？)
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest   # 管家去仓库里领一台最新的 Ubuntu 服务器
+
+    steps: # 具体的执行步骤
+    
+    # 动作 1：把你的代码拉取到这台云端服务器上
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    # 动作 2：安装 Go 语言环境
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.22'   # 指定你使用的 Go 版本
+
+    # 动作 3：下载所有的依赖包 (go.mod)
+    - name: Download Dependencies
+      run: go mod download
+
+    # 动作 4：尝试编译 Go 代码 (确保你没写出语法错误)
+    - name: Build Go Code
+      run: go build -o app ./greet/greet.go
+
+    # 动作 5：尝试打包 Docker 镜像 (确保 Dockerfile 没写错)
+    - name: Test Docker Build
+      run: docker build -t zero-demo-test .
