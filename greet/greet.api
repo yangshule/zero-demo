@@ -46,4 +46,3 @@ service greet-api {
 	@handler UserInfo
 	get /user/info returns (UserInfoResp)
 }
-

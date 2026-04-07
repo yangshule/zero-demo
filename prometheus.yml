@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 5s # 每 5 秒去拉取一次数据 (为了实时性，我们设短一点)
+
+scrape_configs:
+  - job_name: 'greet-api'
+    static_configs:
+      # 去 Docker 网络里找叫 greet-api 的兄弟，访问它的 9091 端口
+      - targets: ['greet-api:9091']

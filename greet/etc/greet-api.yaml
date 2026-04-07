@@ -18,3 +18,8 @@ Cache:
 Auth:
   AccessSecret: "u8wG9d2s@6#v1lA"
   AccessExpire: 3600
+
+Prometheus:
+  Host: 0.0.0.0
+  Port: 9091
+  Path: /metrics

@@ -34,3 +34,23 @@ services:
     container_name: redis-svc
     ports:
       - "6379:6379"
+  
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      # 把我们刚才写的清单，挂载进容器内部
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - greet-api # 等你的 Go 程序启动了，它再启动
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000" # Grafana 的网页大屏端口
+    depends_on:
+      - prometheus  # 等采集员启动了，画师再启动
