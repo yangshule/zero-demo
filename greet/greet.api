@@ -46,3 +46,6 @@ service greet-api {
 	@handler UserInfo
 	get /user/info returns (UserInfoResp)
 }
+
+UserRpc:
+  Target: 127.0.0.1:8080

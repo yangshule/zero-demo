@@ -11,6 +11,7 @@ import (
 	"zero-demo/greet/internal/model"
 	"zero-demo/greet/internal/svc"
 	"zero-demo/greet/internal/types"
+	"zero-demo/user/rpc/user"
 
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -32,6 +33,19 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 
 func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err error) {
 	// todo: add your logic here and delete this line
+	rpcResp, err := l.svcCtx.UserRpc.Login(l.ctx, &user.LoginReq{
+		Username: "admin",  // 传给 RPC 的账号
+		Password: "123456", // 传给 RPC 的密码
+	})
+
+	if err != nil {
+		l.Logger.Errorf("RPC 调用失败: %v", err)
+		return nil, err
+	}
+
+	// 打印 RPC 返回的结果！
+	l.Logger.Infof("RPC 调用成功！RPC返回的Token是: %s", rpcResp.Token)
+
 	// 1. 去数据库查用户 (根据学号)
 	userInfo, err := l.svcCtx.UserModel.FindOneByNumber(l.ctx, req.Number)
 	if err != nil {
