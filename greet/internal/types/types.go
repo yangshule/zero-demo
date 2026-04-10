@@ -4,13 +4,13 @@
 package types
 
 type LoginReq struct {
+	Username string `json:"username"`
 	Number   string `json:"number"`
 	Password string `json:"password"`
 }
 
 type LoginResp struct {
-	AccessToken  string `json:"accessToken"`
-	AccessExpire int64  `json:"accessExpire"`
+	Token string `json:"token"`
 }
 
 type RegisterReq struct {
@@ -21,6 +21,10 @@ type RegisterReq struct {
 
 type RegisterResp struct {
 	Message string `json:"message"`
+}
+
+type UserInfoReply struct {
+	Name string `json:"name"`
 }
 
 type UserInfoResp struct {

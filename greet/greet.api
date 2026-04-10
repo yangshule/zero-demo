@@ -13,19 +13,23 @@ type RegisterResp {
 }
 
 type LoginReq {
+	Username string `json:"username"`
 	Number   string `json:"number"`
 	Password string `json:"password"`
 }
 
 type LoginResp {
-	AccessToken  string `json:"accessToken"`
-	AccessExpire int64  `json:"accessExpire"`
+	Token string `json:"token"`
 }
 
 type UserInfoResp {
 	Id     int64  `json:"id"`
 	Name   string `json:"name"`
 	Number string `json:"number"`
+}
+
+type UserInfoReply {
+	Name string `json:"name"`
 }
 
 // 3. 定义服务接口
@@ -44,8 +48,6 @@ service greet-api {
 )
 service greet-api {
 	@handler UserInfo
-	get /user/info returns (UserInfoResp)
+	get /user/info returns (UserInfoReply)
 }
 
-UserRpc:
-  Target: 127.0.0.1:8080

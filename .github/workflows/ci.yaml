@@ -1,45 +1,47 @@
 name: Zero-Demo CI Pipeline  # 流水线的名字
 
-# 1. 触发条件 (什么时候唤醒管家？)
+# 1. 触发条件
 on:
   push:
-    branches: [ "main" ]     # 当有代码推送到 main 分支时触发
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
-# 2. 任务列表 (管家要做什么？)
+# 2. 任务列表
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest   # 管家去仓库里领一台最新的 Ubuntu 服务器
+    runs-on: ubuntu-latest
 
-    steps: # 具体的执行步骤
-    
-    # 动作 1：把你的代码拉取到这台云端服务器上
+    steps:
+    # 动作 1：拉取代码 (升级到 v4)
     - name: Checkout Code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
-    # 动作 2：安装 Go 语言环境
+    # 动作 2：安装 Go 语言环境并开启缓存 (升级到 v5)
     - name: Set up Go
-      uses: actions/setup-go@v4
+      uses: actions/setup-go@v5
       with:
-        go-version: '1.22'   # 指定你使用的 Go 版本
+        go-version: '1.22'
+        cache: true  # 核心优化：开启缓存，下次执行 CI 会快很多！
 
-    # 新增：极其严格的代码规范检查
-    - name: 代码规范检查
-      uses: golangci/golangci-lint-action@v3
-
-    # 新增：运行你写的所有单元测试
-    - name: 运行单元测试
-      run: go test -v ./...
-
-    # 动作 3：下载所有的依赖包 (go.mod)
+    # 动作 3：先下载依赖！(逻辑修正：必须在测试和检查前执行)
     - name: Download Dependencies
       run: go mod download
 
-    # 动作 4：尝试编译 Go 代码 (确保你没写出语法错误)
-    - name: Build Go Code
-      run: go build -o app ./greet/greet.go
+    # 动作 4：代码规范检查
+    - name: 代码规范检查
+      uses: golangci/golangci-lint-action@v3
+      with:
+        version: latest  # 指定使用最新版的 linter
 
-    # 动作 5：尝试打包 Docker 镜像 (确保 Dockerfile 没写错)
+    # 动作 5：运行单元测试
+    - name: 运行单元测试
+      run: go test -v ./...
+
+    # 动作 6：尝试编译所有的 Go 代码 (不仅限于 greet.go)
+    - name: Build All Go Code
+      run: go build ./... # 核心优化：确保整个仓库的代码都能编译通过，不会遗漏报错
+
+    # 动作 7：尝试打包 Docker 镜像
     - name: Test Docker Build
       run: docker build -t zero-demo-test .

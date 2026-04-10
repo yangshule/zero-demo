@@ -3,16 +3,16 @@ Host: 0.0.0.0
 Port: 8888
 
 # 修改 DataSource: 把 127.0.0.1 改成 mysql (对应 docker-compose 里的 service 名)
-DataSource: root:root@tcp(mysql:3306)/gozero?charset=utf8mb4&parseTime=true&loc=Local
+DataSource: root:root@tcp(127.0.0.1:3306)/gozero?charset=utf8mb4&parseTime=true&loc=Local
 
 # 修改 Redis: 把 localhost 改成 redis
 Redis:
-  Host: redis:6379
+  Host: 127.0.0.1:6379
   Type: node
 
 # 修改 Cache: 把 localhost 改成 redis
 Cache:
-  - Host: redis:6379
+  - Host: 127.0.0.1:6379
     Pass: ""
 
 Auth:
