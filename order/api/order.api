@@ -1,0 +1,17 @@
+type OrderReq {
+	OrderId string `path:"orderId"` // 从 URL 路径中获取订单号
+}
+
+type OrderResp {
+	OrderId string `json:"orderId"`
+	Status  string `json:"status"`
+	// 下面这两个数据，我们将通过跨服调用 User RPC 来获取！
+	OwnerName   string `json:"ownerName"`
+	OwnerSecret string `json:"ownerSecret"`
+}
+
+service order-api {
+	@handler GetOrder
+	get /order/:orderId (OrderReq) returns (OrderResp)
+}
+

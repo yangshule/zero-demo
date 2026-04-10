@@ -16,7 +16,21 @@ message LoginResp {
     string token = 2;
 }
 
+message UserInfoReq {
+    string username = 1; // 用唯一标识 username 来查
+}
+
+message UserInfoResp {
+    int64 id = 1;
+    string username = 2;
+    // 真实生产中严禁返回密码，这里为了演示证明查到了真实数据，我们把它带上
+    string password = 3; 
+}
+
 // 定义服务 (包含具体的方法)
 service User {
     rpc Login(LoginReq) returns(LoginResp);
+    rpc getUserInfo(UserInfoReq) returns(UserInfoResp);
 }
+
+
