@@ -4,4 +4,7 @@ Port: 8889 # 为了不和 Greet 网关冲突，Order 用 8889 端口
 
 # 登记 User RPC 的通讯录
 UserRpc:
-  Target: 127.0.0.1:8080
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: user.rpc

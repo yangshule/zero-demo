@@ -1,10 +1,10 @@
 Name: user.rpc
 ListenOn: 0.0.0.0:8080
 
-# Etcd:
-#   Hosts:
-#   - 127.0.0.1:2379
-#   Key: user.rpc
+Etcd:
+  Hosts:
+  - 127.0.0.1:2379
+  Key: user.rpc
 
 # 注意：DataSource 里的 gozero 换成你实际建表的数据库名
 DataSource: root:root@tcp(127.0.0.1:3306)/gozero?charset=utf8mb4&parseTime=true&loc=Local

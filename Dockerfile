@@ -9,8 +9,8 @@ ENV GOPROXY=https://goproxy.cn,direct
 
 RUN go mod download
 
-# 2. 复制 greet 服务代码到容器的 /app/greet 目录
-COPY greet greet/
+# 2. 复制 所有 服务代码到容器的 / 目录
+COPY . .
 
 # 3. 编译 (注意路径变化：编译 greet 目录下的 greet.go)
 RUN go build -ldflags="-s -w" -o greet-api greet/greet.go

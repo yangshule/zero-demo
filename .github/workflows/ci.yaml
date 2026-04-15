@@ -33,6 +33,7 @@ jobs:
       uses: golangci/golangci-lint-action@v3
       with:
         version: latest  # 指定使用最新版的 linter
+        args: --timeout=20m
 
     # 动作 5：运行单元测试
     - name: 运行单元测试

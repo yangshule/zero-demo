@@ -54,3 +54,11 @@ services:
       - "3000:3000" # Grafana 的网页大屏端口
     depends_on:
       - prometheus  # 等采集员启动了，画师再启动
+
+  etcd:
+    image: bitnami/etcd:latest
+    container_name: etcd
+    ports:
+      - "2379:2379" # ETCD 默认的客户端通信端口
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes # 本地开发允许无密码连接
